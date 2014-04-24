@@ -1,0 +1,40 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="shortcut icon" href="images/tictactoe.ico">
+<link rel="stylesheet" type="text/css" href="styles/layout.css" media="screen" />
+<title>Tic Tac Toe</title>
+<script>
+	function switchGameType(element){
+		var prevVal = element.firstChild.innerHTML;
+		var newVal;
+		
+		var as = document.getElementsByTagName('a');
+		if(element.firstChild.innerHTML == "3x3"){
+			element.firstChild.innerHTML = "10x10"; 
+			newVal = element.firstChild.innerHTML;
+		}else{
+			element.firstChild.innerHTML = "3x3"; 
+			newVal = element.firstChild.innerHTML;
+		}
+		
+		for(var i = 0; i < as.length ; i++){
+			as[i].href = as[i].href.replace(prevVal,newVal);
+		}
+	}
+</script>
+</head>
+<body>
+
+	<div class="centered">
+    	<div class="swap" onclick="switchGameType(this)"><span>3x3</span><span> board</span></div>
+        <ul>
+        	<li><a href="tictactoe.html?gameMode=single&gameType=3x3">Single Player</a></li>
+            <li><a href="tictactoe.html?gameMode=double&gameType=3x3">Hot-Seat</a></li>
+            <li><a href="tictactoe.html?gameMode=internet&gameType=3x3">Multiplayer</a></li>
+        </ul>
+    </div>
+
+</body>
+</html>
