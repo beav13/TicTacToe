@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 
 var connectionPool = [];
-var quePool = {};
+var quePool = {"3x3":[],
+				"5x5":[]};
 var requestedOpponentPool = [];
 var pairPool = [];
 
