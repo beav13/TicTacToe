@@ -11,6 +11,7 @@ function TicTacToe(){
 	
 	//3 game modes: single, double, internet
 	this.gameMode;
+	this.gameType;
 	
 	this.pieceOffset;
 	this.canvasWidth;
@@ -97,6 +98,7 @@ function TicTacToe(){
 		
 		//TODO refactor this shit
 		if(gameType == "3x3"){
+			this.gameType = "3x3";
 			imageBackground.src = displayInfoBucket.imageBackground3x3;
 			imageHoverX.src = displayInfoBucket.imageHoverX3x3;
 			imageHoverO.src = displayInfoBucket.imageHoverO3x3;
@@ -111,6 +113,7 @@ function TicTacToe(){
 			this.numberOfTiles = 3;
 			this.winStreak = 3;				
 		}else{
+			this.gameType = "5x5";
 			imageBackground.src = displayInfoBucket.imageBackground5x5;
 			imageHoverX.src = displayInfoBucket.imageHoverX5x5;
 			imageHoverO.src = displayInfoBucket.imageHoverO5x5;
@@ -214,7 +217,8 @@ function TicTacToe(){
 			  self.appendMessage("\nWaiting for opponent.");
 			  var sendData = {"type":"setup",
 			  					"id": meId,
-								"opponent": opponentId
+								"opponent": opponentId,
+								"gameType": self.gameType
 			  				};
 			  
 			  //alert(JSON.stringify(sendData));

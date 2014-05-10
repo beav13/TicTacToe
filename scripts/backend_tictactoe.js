@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 var connectionPool = [];
-var quePool = [];
+var quePool = {};
 var requestedOpponentPool = [];
 var pairPool = [];
 
@@ -52,8 +52,8 @@ var Pair = function(players, designatedOpponents){
 		delete requestedOpponentPool[this.playerOne.id];
 		delete requestedOpponentPool[this.playerTwo.id];
 	}else{
-		delete quePool[this.playerOne.id];
-		delete quePool[this.playerTwo.id];
+		delete quePool[this.playerOne.gameType][this.playerOne.id];
+		delete quePool[this.playerTwo.gameType][this.playerTwo.id];
 	}
 	
 	this.sendMessage = function(message){
@@ -118,19 +118,19 @@ var Pair = function(players, designatedOpponents){
 	}
 }
 
-var pairPlayers = function() {
+var pairPlayers = function(gameType) {
 	
 	console.log("pair players");
 	
-	if(calculateLengthOfMap(quePool) >= 2){
+	if(calculateLengthOfMap(quePool[gameType]) >= 2){
 		var size = 0, key;
 	
 		var players = [];
 		
-		for (key in quePool) {
-			if (quePool.hasOwnProperty(key) && size < 2){
+		for (key in quePool[gameType]) {
+			if (quePool[gameType].hasOwnProperty(key) && size < 2){
 				size++;			
-				players.push(quePool[key]);			
+				players.push(quePool[gameType][key]);			
 			}
 			else{
 				break;
@@ -221,12 +221,13 @@ wsServer.on('request', function(request) {
 							
 						}else{
 							connection.id = Math.floor(Math.random()*1000000);
+							connection.gameType = msg.gameType;
 							connectionPool[connection.id] = connection;
 						
-							quePool[connection.id] = connection;
+							quePool[connection.gameType][connection.id] = connection;
 							
-							if(calculateLengthOfMap(quePool) >= 2){
-								pairPlayers();
+							if(calculateLengthOfMap(quePool[connection.gameType]) >= 2){
+								pairPlayers(connection.gameType);
 							}
 						}
 						
@@ -252,10 +253,10 @@ wsServer.on('request', function(request) {
 					break;
 					
 					case "find-other-request":
-						quePool[connection.id] = connection;
+						quePool[connection.gameType][connection.id] = connection;
 						
-						if(calculateLengthOfMap(quePool) >= 2){
-							pairPlayers();
+						if(calculateLengthOfMap(quePool[connection.gameType]) >= 2){
+							pairPlayers(connection.gameType);
 						}
 					break;
 					
@@ -285,7 +286,7 @@ wsServer.on('request', function(request) {
 			pairPool[connection.pairId].removePair();
 		}
 		delete connectionPool[connection.id];
-		delete quePool[connection.id];
+		delete quePool[connection.gameType][connection.id];
 		delete requestedOpponentPool[connection.id];
     });
 });
