@@ -287,7 +287,9 @@ wsServer.on('request', function(request) {
 			pairPool[connection.pairId].removePair();
 		}
 		delete connectionPool[connection.id];
-		delete quePool[connection.gameType][connection.id];
+		if(quePool[connection.gameType][connection.id]){
+			delete quePool[connection.gameType][connection.id];
+		}		
 		delete requestedOpponentPool[connection.id];
     });
 });
