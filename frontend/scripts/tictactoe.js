@@ -209,8 +209,8 @@ function TicTacToe(){
 	}
 	
 	this.initializeInternetGame = function(meId, opponentId){
-			socket = new WebSocket("ws://razvanarenasumare.no-ip.biz:1338", "echo-protocol");
-			//socket = new WebSocket("ws://localhost:1338", "echo-protocol");
+			var socketPath = "ws://" + window.location.hostname + ":1338";
+			socket = new WebSocket(socketPath, "echo-protocol");
 			
 			socket.addEventListener("open", function(event) {
 			  self.appendMessage("Connected.");
